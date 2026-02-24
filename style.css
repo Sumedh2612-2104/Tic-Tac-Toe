@@ -19,6 +19,7 @@ body {
     justify-content: center;
     align-items: center;
     gap: 1.5vmin;
+    margin: 12px;
 }
 
 
@@ -29,7 +30,6 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     flex-wrap: wrap;
-    padding: 2rem;
     justify-content: center;
     align-items: center;
     gap: 10px;
@@ -166,9 +166,27 @@ button:hover{
         font-size: 1rem;
         padding: 0.8rem;
     }
+    body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;   
+        align-items: center;       
+    }
+
+    main {
+        margin-top: 0;
+    }
 }
 
 @keyframes fadeIn {
     from { opacity: 0; transform: scale(0.9); }
     to { opacity: 1; transform: scale(1); }
+}
+
+@media (hover: none) {
+    .block:hover {
+        transform: none;
+        box-shadow: 0 0 0.5rem black;
+    }
 }
