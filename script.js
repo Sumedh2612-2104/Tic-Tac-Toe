@@ -15,30 +15,35 @@ let chooseO = document.querySelector("#chooseO");
 let gameMode = "";
 let playerSymbol = "";
 let computerSymbol = "";
+let gameOver = false;
 
 let turnO = true ;
 
 const winPatterns = [
-    [0, 1, 2],
-    [0, 3, 6],
-    [0, 4, 8],
-    [1, 4, 7],
-    [2, 5, 8],
-    [2, 4, 6],
-    [3, 4, 5],
-    [6, 7, 8],
+    [0, 1, 2], 
+    [3, 4, 5], 
+    [6, 7, 8], 
+    [0, 3, 6], 
+    [1, 4, 7], 
+    [2, 5, 8], 
+    [0, 4, 8], 
+    [2, 4, 6], 
 ];
 
 const resetgame = () => {
-    turnO = true;
+    turnO = playerSymbol === "O" ? false : true;
     Enabledboxes ();
     msgcontainer.classList.add("hide");
     gameBoard.classList.remove("hide");
+
+    if(gameMode === "computer" && !turnO){
+        setTimeout(computerMove, 500);
+    }
 }
 
 boxes.forEach((block) => {
     block.addEventListener("click", () => {
-        if (block.innerText !== "") return;
+        if (block.innerText !== "" || gameOver) return;
         block.disabled = true;
 
        if(gameMode === "computer"){
@@ -51,7 +56,7 @@ boxes.forEach((block) => {
 
             checkwinner();
 
-            if (!turnO) {
+            if (!turnO && !gameOver) {
                 setTimeout(computerMove, 500);
             }
         }else{
@@ -80,29 +85,104 @@ const Enabledboxes = () => {
     }
 }
 
-const showWinner = (winner) =>{
-    msg.innerText = `Congratulation, The winner is ${winner}! `;
+const showWinner = (symbol) =>{
+
+    gameOver = true;
+
+    let winnerName;
+
+    if(gameMode === "player"){
+        winnerName = symbol;
+    }else if (gameMode === "computer"){
+        if (symbol === computerSymbol) {
+            winnerName = "computer";
+        } else {
+            winnerName = "you";
+        }
+    }
+
+    msg.innerText = `Congratulations! The winner is ${winnerName}!`;
     msgcontainer.classList.remove("hide");
-    gameBoard.classList.add("hide")
+    gameBoard.classList.add("hide");    
     disabledboxes();
 }
 
+
+// The AI introduces this function to make the computer unbeatable (pro)
+
 const computerMove = () => {
+    if(gameOver) return;
+
     let emptyBoxes = Array.from(boxes).filter(block => block.innerText === "");
+    if (emptyBoxes.length === 0) return;
 
-    if(emptyBoxes.length === 0) return;
+    // Function to check if placing a symbol can win/block
+    const findWinningMove = (symbol) => {
+        for (let pattern of winPatterns) {
+            let vals = pattern.map(i => boxes[i].innerText);
+            if (vals.filter(v => v === symbol).length === 2 && vals.includes("")) {
+                let emptyIndex = pattern[vals.indexOf("")];
+                return boxes[emptyIndex];
+            }
+        }
+        return null;
+    };
 
-    let randomBoxes =emptyBoxes[Math.floor(Math.random()*emptyBoxes.length)];
+    // 1️⃣ Win if possible
+    let winBox = findWinningMove(computerSymbol);
+    if (winBox) {
+        winBox.innerText = computerSymbol;
+        winBox.style.color = computerSymbol === "X" ? "#421131" : "#ff48b0";
+        winBox.disabled = true;
+        checkwinner();
+        turnO = true;
+        return;
+    }
 
-    randomBoxes.innerText = computerSymbol;
-    randomBoxes.style.color = computerSymbol === "X" ? "#421131" : "#ff48b0";
-    randomBoxes.disabled = true;
+    // 2️⃣ Block the player
+    let blockBox = findWinningMove(playerSymbol);
+    if (blockBox) {
+        blockBox.innerText = computerSymbol;
+        blockBox.style.color = computerSymbol === "X" ? "#421131" : "#ff48b0";
+        blockBox.disabled = true;
+        checkwinner();
+        turnO = true;
+        return;
+    }
 
+    // 3️⃣ Take the center
+    if (boxes[4].innerText === "") {
+        boxes[4].innerText = computerSymbol;
+        boxes[4].style.color = computerSymbol === "X" ? "#421131" : "#ff48b0";
+        boxes[4].disabled = true;
+        checkwinner();
+        turnO = true;
+        return;
+    }
+
+    // 4️⃣ Take a corner
+    let corners = [0, 2, 6, 8].filter(i => boxes[i].innerText === "");
+    if (corners.length > 0) {
+        let cornerBox = boxes[corners[Math.floor(Math.random() * corners.length)]];
+        cornerBox.innerText = computerSymbol;
+        cornerBox.style.color = computerSymbol === "X" ? "#421131" : "#ff48b0";
+        cornerBox.disabled = true;
+        checkwinner();
+        turnO = true;
+        return;
+    }
+
+    // 5️⃣ Pick a random empty box
+    let randomBox = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
+    randomBox.innerText = computerSymbol;
+    randomBox.style.color = computerSymbol === "X" ? "#421131" : "#ff48b0";
+    randomBox.disabled = true;
     checkwinner();
     turnO = true;
-}
+};
 
  const showDraw = () => {
+        gameOver = true;
         msg.innerText = "OOPS! its a Draw";
         msgcontainer.classList.remove("hide");
         gameBoard.classList.add("hide")
