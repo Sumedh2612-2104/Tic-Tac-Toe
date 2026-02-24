@@ -15,7 +15,7 @@ let chooseO = document.querySelector("#chooseO");
 let gameMode = "";
 let playerSymbol = "";
 let computerSymbol = "";
-let gameOver = false;
+
 
 let turnO = true ;
 
@@ -43,7 +43,7 @@ const resetgame = () => {
 
 boxes.forEach((block) => {
     block.addEventListener("click", () => {
-        if (block.innerText !== "" || gameOver) return;
+        if (block.innerText !== "") return;
         block.disabled = true;
 
        if(gameMode === "computer"){
@@ -56,7 +56,7 @@ boxes.forEach((block) => {
 
             checkwinner();
 
-            if (!turnO && !gameOver) {
+            if (!turnO) {
                 setTimeout(computerMove, 500);
             }
         }else{
@@ -87,21 +87,19 @@ const Enabledboxes = () => {
 
 const showWinner = (symbol) =>{
 
-    gameOver = true;
-
-    let winnerName;
+    let msgText;
 
     if(gameMode === "player"){
-        winnerName = symbol;
+        msgText = symbol === playerSymbol ?"Congratulations! You Won 🎉🔥" :`Player ${symbol} won!`;
     }else if (gameMode === "computer"){
-        if (symbol === computerSymbol) {
-            winnerName = "computer";
-        } else {
-            winnerName = "you";
+        if (symbol === playerSymbol) {
+            msgText =  "Congratulations! You won 🎉🔥" ;
+        }else if(symbol === computerSymbol){
+            msgText =  "Sorry!😔  Computer won!";
         }
     }
 
-    msg.innerText = `Congratulations! The winner is ${winnerName}!`;
+    msg.innerText = msgText;
     msgcontainer.classList.remove("hide");
     gameBoard.classList.add("hide");    
     disabledboxes();
@@ -111,7 +109,6 @@ const showWinner = (symbol) =>{
 // The AI introduces this function to make the computer unbeatable (pro)
 
 const computerMove = () => {
-    if(gameOver) return;
 
     let emptyBoxes = Array.from(boxes).filter(block => block.innerText === "");
     if (emptyBoxes.length === 0) return;
@@ -182,7 +179,6 @@ const computerMove = () => {
 };
 
  const showDraw = () => {
-        gameOver = true;
         msg.innerText = "OOPS! its a Draw";
         msgcontainer.classList.remove("hide");
         gameBoard.classList.add("hide")
