@@ -4,6 +4,11 @@ let newbtn = document.querySelector("#newgame");
 let msg =document.querySelector("#msg");
 let msgcontainer = document.querySelector(".winner");
 let gameBoard = document.querySelector(".mainContainer");
+let vsComputer = document.querySelector("#computer")
+let vsPlayer = document.querySelector("#player")
+let startScreen = document.querySelector("#start-screen");
+let homeBtn = document.querySelector("#home");
+let gameMode = "";
 
 let turnO = true ;
 
@@ -40,6 +45,11 @@ boxes.forEach((block) => {
        block.disabled = true;
 
        checkwinner();
+
+    //    if(gameMode === "computer" && !turnO){
+    //         setTimeout(computerMove, 500);
+    //     }
+
     })
 })
 
@@ -73,7 +83,7 @@ const showWinner = (winner) =>{
 
 const checkwinner = () => {
     let iswinner = false;
-    for(pattern of winPatterns) {
+    for(let pattern of winPatterns) {
         
         let pos1val = boxes[pattern[0]].innerText;
         let pos2val = boxes[pattern[1]].innerText;
@@ -105,3 +115,23 @@ const checkwinner = () => {
 
 newbtn.addEventListener("click", resetgame);
 reset.addEventListener("click", resetgame);
+
+vsPlayer.addEventListener("click", () => {
+    startScreen.classList.add("hide");
+    gameBoard.classList.remove("hide");
+});
+
+vsComputer.addEventListener("click", () => {
+    gameMode = "computer";
+    startScreen.classList.add("hide");
+    gameBoard.classList.remove("hide");
+})
+
+homeBtn.addEventListener("click", () => {
+
+    gameBoard.classList.add("hide");
+    msgcontainer.classList.add("hide");
+    startScreen.classList.remove("hide");
+    turnO = true;
+    Enabledboxes();
+});

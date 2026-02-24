@@ -21,7 +21,7 @@ body {
 }
 
 
-div2 {
+.Game {
     height: 60vmin;
     width: 60vmin; 
     display: flex;
@@ -42,13 +42,18 @@ div2 {
     background-color: #ffe9ef;
 }
 
-#reset {
+button {
    padding: 1rem;
    font-size: 1.25rem;
    background-color: #FF007F;
    border-radius: 1rem;
    color: aliceblue;
    border: none;
+   cursor: pointer;
+}
+
+button:hover{
+    background-color: #Ff447F;
 }
 
 #newgame {
@@ -66,10 +71,37 @@ div2 {
 }
 
 .winner {
-    margin: 30vmin;
-    gap: 5vmin;
-    margin-bottom: 300px;
-    margin-top: 300px;
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    background-color: #FC8EAC;
+}
+
+#start-screen {
+    position: fixed;
+    inset: 0;
+    font-size: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5vmin;
+    background-color: #FC8EAC;
+    z-index: 100;
+}
+
+.heading {
+    font-size: 5rem;
+    padding: 3rem;
+    color: #1B1F3B;
+}
+
+#start-screen.hide {
+    display: none;
 }
 
 .hide {
