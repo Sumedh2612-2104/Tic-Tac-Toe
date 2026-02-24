@@ -8,7 +8,10 @@ let vsComputer = document.querySelector("#computer")
 let vsPlayer = document.querySelector("#player")
 let startScreen = document.querySelector("#start-screen");
 let homeBtn = document.querySelector("#home");
+let symbolSelection = document.querySelector(".symbol-selection");
 let gameMode = "";
+let playerSymbol = "";
+let computerSymbol = "";
 
 let turnO = true ;
 
@@ -46,9 +49,9 @@ boxes.forEach((block) => {
 
        checkwinner();
 
-    //    if(gameMode === "computer" && !turnO){
-    //         setTimeout(computerMove, 500);
-    //     }
+       if(gameMode === "computer" && !turnO){
+            setTimeout(computerMove, 500);
+        }
 
     })
 })
@@ -117,15 +120,12 @@ newbtn.addEventListener("click", resetgame);
 reset.addEventListener("click", resetgame);
 
 vsPlayer.addEventListener("click", () => {
+    gameMode = "player";
     startScreen.classList.add("hide");
+    symbolSelection.classList.add("hide");
     gameBoard.classList.remove("hide");
 });
 
-vsComputer.addEventListener("click", () => {
-    gameMode = "computer";
-    startScreen.classList.add("hide");
-    gameBoard.classList.remove("hide");
-})
 
 homeBtn.addEventListener("click", () => {
 
@@ -134,4 +134,13 @@ homeBtn.addEventListener("click", () => {
     startScreen.classList.remove("hide");
     turnO = true;
     Enabledboxes();
+});
+
+
+// adding a symbol selection feuture for vscomputer 
+
+vsComputer.addEventListener("click", () => {
+    gameMode = "computer";
+    startScreen.classList.add("hide");
+    symbolSelection.classList.remove("hide");
 });

@@ -104,6 +104,20 @@ button:hover{
     display: none;
 }
 
+/*symbol selectors*/
+
+.symbol-selection {
+    position: fixed;
+    inset: 0;
+    background-color: #FC8EAC;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+
 .hide {
     display: none;
-}
+}   
