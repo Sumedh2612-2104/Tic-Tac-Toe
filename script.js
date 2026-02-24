@@ -10,6 +10,8 @@ let startScreen = document.querySelector("#start-screen");
 let homeBtn = document.querySelector("#home");
 let symbolSelection = document.querySelector(".symbol-selection");
 let symbolHome = document.querySelector("#symbol-home");
+let chooseX =document.querySelector("#chooseX");
+let chooseO = document.querySelector("#chooseO");
 let gameMode = "";
 let playerSymbol = "";
 let computerSymbol = "";
@@ -36,24 +38,31 @@ const resetgame = () => {
 
 boxes.forEach((block) => {
     block.addEventListener("click", () => {
-        // console.log("box has been clicked");
-       if(turnO) {
-        block.innerText = "O";
-        block.style.color = "#ff48b0";
-        turnO = false;
-       } else {
-        block.innerText ="X";
-        block.style.color = "#421131";
-        turnO = true;
+        if (block.innerText !== "") return;
+        block.disabled = true;
+
+       if(gameMode === "computer"){
+
+            if (turnO) {
+                block.innerText = playerSymbol;
+                block.style.color = playerSymbol === "X" ? "#421131" : "#ff48b0";
+                turnO = false;
+            }
+
+            checkwinner();
+
+            if (!turnO) {
+                setTimeout(computerMove, 500);
+            }
+        }else{
+            
+        block.innerText = turnO ? "O" : "X";
+        block.style.color = turnO? "#ff48b0" : "#421131";
+        turnO = !turnO;
+       
+        checkwinner();
        }
-       block.disabled = true;
-
-       checkwinner();
-
-       if(gameMode === "computer" && !turnO){
-            setTimeout(computerMove, 500);
-        }
-
+            block.disabled = true;
     })
 })
 
@@ -78,6 +87,21 @@ const showWinner = (winner) =>{
     disabledboxes();
 }
 
+const computerMove = () => {
+    let emptyBoxes = Array.from(boxes).filter(block => block.innerText === "");
+
+    if(emptyBoxes.length === 0) return;
+
+    let randomBoxes =emptyBoxes[Math.floor(Math.random()*emptyBoxes.length)];
+
+    randomBoxes.innerText = computerSymbol;
+    randomBoxes.style.color = computerSymbol === "X" ? "#421131" : "#ff48b0";
+    randomBoxes.disabled = true;
+
+    checkwinner();
+    turnO = true;
+}
+
  const showDraw = () => {
         msg.innerText = "OOPS! its a Draw";
         msgcontainer.classList.remove("hide");
@@ -95,7 +119,7 @@ const checkwinner = () => {
 
         if (pos1val !=  "" && pos2val !="" && pos3val != "") {
             if(pos1val === pos2val && pos2val === pos3val){
-            // console.log("winner");
+
         showWinner (pos1val) 
         iswinner = true;
         return ;
@@ -149,4 +173,30 @@ vsComputer.addEventListener("click", () => {
 symbolHome.addEventListener("click", () => {
     symbolSelection.classList.add("hide");
     startScreen.classList.remove("hide");
+})
+
+// let'sz addd computer feuture into thisssss....
+
+const startGameVsComputer = () => {
+    symbolSelection.classList.add("hide");
+    gameBoard.classList.remove("hide");
+    turnO = playerSymbol === "O" ? false : true; 
+    Enabledboxes();
+
+    // If computer starts first, make its move
+    if (!turnO) {
+        setTimeout(computerMove, 500);
+    }
+};
+
+chooseX.addEventListener("click", () => {
+        playerSymbol = "X";
+        computerSymbol = "O";
+        startGameVsComputer();
+})
+
+chooseO.addEventListener("click", () => {
+    playerSymbol = "O";
+    computerSymbol = "X";
+    startGameVsComputer();
 })
