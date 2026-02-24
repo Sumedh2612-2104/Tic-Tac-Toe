@@ -110,36 +110,25 @@ const computerMove = () => {
     }
 
 const checkwinner = () => {
-    let iswinner = false;
-    for(let pattern of winPatterns) {
-        
-        let pos1val = boxes[pattern[0]].innerText;
-        let pos2val = boxes[pattern[1]].innerText;
-        let pos3val = boxes[pattern[2]].innerText;
+    // Check all winning patterns
+    for (let pattern of winPatterns) {
+        const [a, b, c] = pattern;
+        const valA = boxes[a].innerText;
+        const valB = boxes[b].innerText;
+        const valC = boxes[c].innerText;
 
-        if (pos1val !=  "" && pos2val !="" && pos3val != "") {
-            if(pos1val === pos2val && pos2val === pos3val){
-
-        showWinner (pos1val) 
-        iswinner = true;
-        return ;
+        if (valA && valA === valB && valA === valC) {
+            showWinner(valA);
+            return; // Exit immediately after finding a winner
+        }
     }
-        }
-        }
-    
 
-   
-    let allfilled = true;
-    boxes.forEach((block) => {
-        if(block.innerText === ""){
-            allfilled =false;
-        }
-    });
-
-    if(allfilled && !iswinner){
+    // Check for draw
+    const allFilled = Array.from(boxes).every(block => block.innerText !== "");
+    if (allFilled) {
         showDraw();
     }
-}
+};
 
 newbtn.addEventListener("click", resetgame);
 reset.addEventListener("click", resetgame);
