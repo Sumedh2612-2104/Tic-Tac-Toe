@@ -9,6 +9,7 @@ let vsPlayer = document.querySelector("#player")
 let startScreen = document.querySelector("#start-screen");
 let homeBtn = document.querySelector("#home");
 let symbolSelection = document.querySelector(".symbol-selection");
+let symbolHome = document.querySelector("#symbol-home");
 let gameMode = "";
 let playerSymbol = "";
 let computerSymbol = "";
@@ -144,3 +145,8 @@ vsComputer.addEventListener("click", () => {
     startScreen.classList.add("hide");
     symbolSelection.classList.remove("hide");
 });
+
+symbolHome.addEventListener("click", () => {
+    symbolSelection.classList.add("hide");
+    startScreen.classList.remove("hide");
+})
