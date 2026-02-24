@@ -1,19 +1,20 @@
 * {
     padding: 0;
     margin: 0;
+    scroll-behavior: smooth;
 }
 
 main {
-    margin-top: 40px;
+    padding: 2rem 2rem;
 }
 
 body {
-   background-color: #FC8EAC;
+    background: linear-gradient(135deg, #ff9ab5, #ff6f9c);
    text-align: center;  
+   min-height: 100vh;
 }
 
 .container {
-    height: 70vh ;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,24 +23,42 @@ body {
 
 
 .Game {
-    height: 60vmin;
-    width: 60vmin; 
-    display: flex;
+    width: min(90vw, 90vh, 500px);
+    max-width: 500px;
+    aspect-ratio: 1 / 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     flex-wrap: wrap;
+    padding: 2rem;
     justify-content: center;
     align-items: center;
-    gap: 1.5vmin;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 1.5rem;
 }
 
+
 .block {
-    height: 18vmin;
-    width: 18vmin;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+
     border-radius: 1rem;
     border: none;
     box-shadow: 0 0 0.5rem black;
-    font-size: 8vmin;
-    color: #FF007F ;
+    font-size: clamp(2rem, 8vw, 4rem);
+    color: #FF007F;
     background-color: #ffe9ef;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.block:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0 1rem #ff48b0;
+}
+
+.block:active {
+    transform: scale(0.95);
 }
 
 button {
@@ -56,14 +75,7 @@ button:hover{
     background-color: #fccbd8;
 }
 
-#newgame {
-     padding: 1rem;
-   font-size: 1.25rem;
-   background-color: #FF007F;
-   border-radius: 1rem;
-   color: aliceblue;
-   border: none;
-}
+
 
 #msg {
     color: #560238 ;
@@ -79,6 +91,7 @@ button:hover{
     align-items: center;
     gap: 2rem;
     background-color: #FC8EAC;
+    animation: fadeIn 0.4s ease;
 }
 
 #start-screen {
@@ -121,3 +134,41 @@ button:hover{
 .hide {
     display: none;
 }   
+
+
+/*making it responsive */
+@media (max-width: 768px) {
+    .Game {
+        width: 80vw;
+        gap: 10px;
+    }
+
+    .block {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .Game {
+        width: 92vw;
+        gap: 8px;
+    }
+
+    .block {
+        font-size: 2.2rem;
+    }
+
+    .heading {
+        font-size: 2.5rem;
+    }
+
+    button {
+        font-size: 1rem;
+        padding: 0.8rem;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
