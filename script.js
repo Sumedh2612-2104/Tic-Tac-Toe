@@ -56,6 +56,8 @@ boxes.forEach((block) => {
 
             checkwinner();
 
+            if (!msgcontainer.classList.contains("hide")) return;
+
             if (!turnO) {
                 setTimeout(computerMove, 500);
             }
